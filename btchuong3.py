@@ -7,20 +7,15 @@ from email.message import EmailMessage
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Load .env file
 load_dotenv()
 
-
-# Cấu hình thư mục
 SOURCE_FOLDER = "databasespython"    
 BACKUP_FOLDER = "backups"       
 
-# Cấu hình Email
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
 
-# Cấu hình Logging
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
@@ -36,9 +31,9 @@ def send_email(subject, body):
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)
             server.send_message(message)
         
-        logging.info(f"Email sent: {subject}")
+        logging.info(f"mail đã gửi: {subject}")
     except Exception as e:
-        logging.error(f"Error sending email: {str(e)}")
+        logging.error(f" Lỗi mail: {str(e)}")
         raise
 
 def wait_until_next_target_time():
@@ -47,7 +42,7 @@ def wait_until_next_target_time():
     if now > target_time:
         target_time = target_time.replace(day=now.day + 1)
     sleep_time = (target_time - now).total_seconds()
-    logging.info(f"Waiting until {target_time.strftime('%H:%M:%S')}. Sleeping for {sleep_time} seconds.")
+    logging.info(f" {target_time.strftime('%H:%M:%S')} {sleep_time} ")
     time.sleep(sleep_time)
 
 def backup_databases():
@@ -68,9 +63,9 @@ def backup_databases():
             backup_file_name = f"{os.path.splitext(file_name)[0]}_{timestamp}{os.path.splitext(file_name)[1]}"
             dst_path = os.path.join(BACKUP_FOLDER, backup_file_name)
             shutil.copy2(src_path, dst_path)
-            logging.info(f"File {file_name} backed up as {backup_file_name}.")
+            logging.info(f"File {file_name} backed qua {backup_file_name}.")
         #thanhcongggg
-        logging.info("Backup completed successfully.")
+        logging.info("Backup thanhcong.")
         send_email("Backup Thành Công", f"Đã backup {len(db_files)} file database thành công lúc {datetime.now()}.")
     except Exception as e:
         #loi
@@ -79,6 +74,3 @@ def backup_databases():
 if __name__ == "__main__":
     backup_databases()
 
-#muon sua 
-#abcxyz
-#123123
